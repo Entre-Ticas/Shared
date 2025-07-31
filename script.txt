@@ -84,3 +84,12 @@
       document.getElementById('price2').addEventListener('input', () => calculate(2));
       document.getElementById('pound2').addEventListener('input', () => calculate(2));
     });
+
+
+ function init() {
+    insertHTML();
+    obtenerTipoCambio();
+    document.getElementById('price1').addEventListener('input', () => calculate(1));
+    document.getElementById('price2').addEventListener('input', () => calculate(2));
+    document.getElementById('pound2').addEventListener('input', () => calculate(2));
+ }
