@@ -13,7 +13,7 @@
     }
 
     async function obtenerTipoCambio() {
-      const url = `https://raw.githubusercontent.com/Entre-Ticas/TC/main/TC.txt?nocache=${new Date().getTime()}`;
+      const url = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/TC.txt?nocache=${new Date().getTime()}`;
       try {
         const response = await fetch(url);
         const texto = await response.text();
