@@ -1,4 +1,4 @@
- let tipoCambio = 0;
+    let tipoCambio = 0;
     let precioLibraAmazon = 7;
     let precioLibraRossTargetBurlin = 7;
     let ImpuestosUSA = 7;
@@ -12,7 +12,7 @@
       });
     }
 
-    async function obtenerTipoCambio() {
+    async function getExchange() {
       const url = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/TC.txt?nocache=${new Date().getTime()}`;
       try {
         const response = await fetch(url);
@@ -36,7 +36,7 @@
           .then(html => {
             document.getElementById('calc1').innerHTML = html;     
             document.getElementById('price0').addEventListener('input', () => calculate(0));
-            obtenerTipoCambio();
+            getExchange();
           });
       }
 
@@ -77,18 +77,9 @@
       document.getElementById(`results${id}`).style.display = 'block';
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      insertHTML();
-      obtenerTipoCambio();
-      document.getElementById('price1').addEventListener('input', () => calculate(1));
-      document.getElementById('price2').addEventListener('input', () => calculate(2));
-      document.getElementById('pound2').addEventListener('input', () => calculate(2));
-    });
-
-
  function init() {
     insertHTML();
-    obtenerTipoCambio();
+    getExchange();
     document.getElementById('price1').addEventListener('input', () => calculate(1));
     document.getElementById('price2').addEventListener('input', () => calculate(2));
     document.getElementById('pound2').addEventListener('input', () => calculate(2));
