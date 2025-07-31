@@ -30,7 +30,7 @@
 
     function insertHTML()
     {
-          const url2 = `https://raw.githubusercontent.com/Entre-Ticas/TC/main/shared.html?nocache=${new Date().getTime()}`;
+          const url2 = `https://raw.githubusercontent.com/Entre-Ticas/TC/Shared/shared.html?nocache=${new Date().getTime()}`;
           fetch(url2)
           .then(response => response.text())
           .then(html => {
