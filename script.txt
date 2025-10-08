@@ -1,91 +1,108 @@
-    let tipoCambio = 0;
-    let precioLibraAmazon = 7;
-    let precioKgAmazon = 14;
-    let precioLibraRossTargetBurlin = 7;
-    let ImpuestosUSA = 7;
+let tipoCambio = 0;
+let precioLibraAmazon = 7;
+let precioKgAmazon = 14;
+let precioLibraRossTargetBurlin = 7;
+let ImpuestosUSA = 7;
 
-    function showTab(tabNum) {
-      document.querySelectorAll('.tab').forEach((el, idx) => {
-        el.classList.toggle('active', idx + 1 === tabNum);
-      });
-      document.querySelectorAll('.calculator').forEach((el, idx) => {
-        el.classList.toggle('active', idx + 1 === tabNum);
-      });
-    }
+function showTab(tabNum) {
+  document.querySelectorAll('.tab').forEach((el, idx) => {
+	el.classList.toggle('active', idx + 1 === tabNum);
+  });
+  document.querySelectorAll('.calculator').forEach((el, idx) => {
+	el.classList.toggle('active', idx + 1 === tabNum);
+  });
+}
 
-    async function getExchange() {
-      const url = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/TC.txt?nocache=${new Date().getTime()}`;
-      try {
-        const response = await fetch(url);
-        const texto = await response.text();
-        tipoCambio = parseFloat(texto.trim());
-        
-        document.getElementById('exchange0').textContent = "¢" + tipoCambio;
-        document.getElementById('exchange1').textContent = "¢" + tipoCambio;
-        document.getElementById('exchange2').textContent = "¢" + tipoCambio;
-  
-      } catch (error) {
-        console.error("Error al obtener el tipo de cambio: ", error);
-      }
-    }
+async function getExchange() {
+  const url = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/TC.txt?nocache=${new Date().getTime()}`;
+  try {
+	const response = await fetch(url);
+	const texto = await response.text();
+	tipoCambio = parseFloat(texto.trim());
+	
+	document.getElementById('exchange0').textContent = "¢" + tipoCambio;
+	document.getElementById('exchange1').textContent = "¢" + tipoCambio;
+	document.getElementById('exchange2').textContent = "¢" + tipoCambio;
 
-    function insertHTML()
-    {
-          const url2 = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/shared.html?nocache=${new Date().getTime()}`;
-          fetch(url2)
-          .then(response => response.text())
-          .then(html => {
-            document.getElementById('calc1').innerHTML = html;     
-            document.getElementById('price0').addEventListener('input', () => calculate(0));
-            getExchange();
-          });
-      }
+  } catch (error) {
+	console.error("Error al obtener el tipo de cambio: ", error);
+  }
+}
 
-    function calculate(id) {
-      let price = parseFloat(document.getElementById(`price${id}`).value);
-      const cbk = document.getElementById(`cbkDollar${id}`)?.checked;
+function insertHTML()
+{
+	  const url2 = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/shared.html?nocache=${new Date().getTime()}`;
+	  fetch(url2)
+	  .then(response => response.text())
+	  .then(html => {
+		document.getElementById('calc1').innerHTML = html;     
+		document.getElementById('price0').addEventListener('input', () => calculate(0));
+		getExchange();
+	  });
+}
 
-      if (isNaN(price) || isNaN(tipoCambio)) {
-        document.getElementById(`results${id}`).style.display = 'none';
-        return;
-      }
+function calculate(id) {
+  let price = parseFloat(document.getElementById(`price${id}`).value);
+  const cbk = document.getElementById(`cbkDollar${id}`)?.checked;
 
-      if(id == 0)
-      {
-          let taxPercent = price * (ImpuestosUSA / 100);
-          price = price + taxPercent;
-          document.getElementById(`tax${id}`).textContent = taxPercent.toFixed(2);
-      }
+  if (isNaN(price) || isNaN(tipoCambio)) {
+	document.getElementById(`results${id}`).style.display = 'none';
+	return;
+  }
 
-      let feePercent = cbk ? 0.04 : 0.08;
-      let fee = price * feePercent;
-      let weight = 0;
+  if(id == 0)
+  {
+	  let taxPercent = price * (ImpuestosUSA / 100);
+	  price = price + taxPercent;
+	  document.getElementById(`tax${id}`).textContent = taxPercent.toFixed(2);
+  }
 
-      if(id == 2)
-      {
-       	    let pound = document.getElementById(`pound${id}`).value;
-    	    if (!document.getElementById('Lb1').checked && !document.getElementById('Kg1').checked) {
-    	      alert("Por favor, seleccione una opción: Kilos o Libras.");
-    	      return;
-    	    }
-    	        else if (document.getElementById('Lb1').checked) {
-                weight = pound * precioLibraAmazon;  
-    	    }
-    	        else if (document.getElementById('Kg1').checked ) {
-                weight = pound * precioKgAmazon;  
-	        }
-            document.getElementById(`amountPound${id}`).textContent = weight.toFixed(2);
-      } 
+  let feePercent = cbk ? 0.04 : 0.08;
+  let fee = price * feePercent;
+  let weight = 0;
 
-      let totalUsd = price + fee + weight;
-      let totalCrc = totalUsd * tipoCambio;
+  if(id == 2)
+  {
+	  let pound = document.getElementById(`pound${id}`).value;
+		if (!document.getElementById('Lb1').checked && !document.getElementById('Kg1').checked) {
+		  alert("Por favor, seleccione una opción: Kilos o Libras.");
+		  return;
+		}
+			else if (document.getElementById('Lb1').checked) {
+			weight = pound * precioLibraAmazon;  
+		}
+			else if (document.getElementById('Kg1').checked ) {
+			weight = pound * precioKgAmazon;  
+		}
+		document.getElementById(`amountPound${id}`).textContent = weight.toFixed(2);
+  } 
 
-      document.getElementById(`feeVariable${id}`).textContent = cbk ? 4 : 8;
-      document.getElementById(`fee${id}`).textContent = fee.toFixed(2);
-      document.getElementById(`totalUsd${id}`).textContent = totalUsd.toFixed(2);
-      document.getElementById(`totalCrc${id}`).textContent = Math.round(totalCrc).toLocaleString('es-CR');
-      document.getElementById(`results${id}`).style.display = 'block';
-    }
+  let totalUsd = price + fee + weight;
+  let totalCrc = totalUsd * tipoCambio;
+
+  document.getElementById(`feeVariable${id}`).textContent = cbk ? 4 : 8;
+  document.getElementById(`fee${id}`).textContent = fee.toFixed(2);
+  document.getElementById(`totalUsd${id}`).textContent = totalUsd.toFixed(2);
+  document.getElementById(`totalCrc${id}`).textContent = Math.round(totalCrc).toLocaleString('es-CR');
+  document.getElementById(`results${id}`).style.display = 'block';
+}
+
+document.querySelectorAll('input[name="unidad"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+	let id = 2;
+	let lbOrKg = 2;
+	let pound = document.getElementById(`pound${id}`).value;
+	if (document.getElementById('Lb1').checked) {
+	  lbOrKg = (pound * 2.20462).toFixed(2);
+	} else if (document.getElementById('Kg1').checked) {
+	  lbOrKg =  (pound / 2.20462).toFixed(2);
+	}
+	
+	console.log(lbOrKg);
+	document.getElementById(`pound${id}`).value = lbOrKg;
+
+   calculate(2);
+});
 
  function init() {
     insertHTML();
@@ -94,5 +111,6 @@
     document.getElementById('price2').addEventListener('input', () => calculate(2));
     document.getElementById('pound2').addEventListener('input', () => calculate(2));
  }
+
 
 
