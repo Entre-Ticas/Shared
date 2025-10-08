@@ -1,5 +1,6 @@
     let tipoCambio = 0;
     let precioLibraAmazon = 7;
+    let precioKgAmazon = 7;
     let precioLibraRossTargetBurlin = 7;
     let ImpuestosUSA = 7;
 
@@ -62,9 +63,18 @@
 
       if(id == 2)
       {
-        let pound = document.getElementById(`pound${id}`).value;
-        weight = pound * precioLibraAmazon;        
-        document.getElementById(`amountPound${id}`).textContent = weight.toFixed(2);
+       	    let pound = document.getElementById(`pound${id}`).value;
+    	    if (!document.getElementById('Lb1').checked && !document.getElementById('Kg1').checked) {
+    	      alert("Por favor, seleccione una opción: Kilos o Libras.");
+    	      return;
+    	    }
+    	        else if (document.getElementById('Lb1').checked) {
+                weight = pound * precioLibraAmazon;  
+    	    }
+    	        else if (document.getElementById('Kg1').checked ) {
+                weight = pound * precioKgAmazon;  
+	        }
+            document.getElementById(`amountPound${id}`).textContent = weight.toFixed(2);
       } 
 
       let totalUsd = price + fee + weight;
@@ -84,3 +94,4 @@
     document.getElementById('price2').addEventListener('input', () => calculate(2));
     document.getElementById('pound2').addEventListener('input', () => calculate(2));
  }
+
