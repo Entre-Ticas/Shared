@@ -101,7 +101,7 @@ document.querySelectorAll('input[name="unidad"]').forEach(radio => {
 	document.getElementById(`pound${id}`).value = lbOrKg;
 
    calculate(2);
-});
+})});
 
  function init() {
     insertHTML();
@@ -110,6 +110,7 @@ document.querySelectorAll('input[name="unidad"]').forEach(radio => {
     document.getElementById('price2').addEventListener('input', () => calculate(2));
     document.getElementById('pound2').addEventListener('input', () => calculate(2));
  }
+
 
 
 
