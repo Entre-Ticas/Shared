@@ -1,6 +1,6 @@
     let tipoCambio = 0;
     let precioLibraAmazon = 7;
-    let precioKgAmazon = 7;
+    let precioKgAmazon = 14;
     let precioLibraRossTargetBurlin = 7;
     let ImpuestosUSA = 7;
 
@@ -94,4 +94,5 @@
     document.getElementById('price2').addEventListener('input', () => calculate(2));
     document.getElementById('pound2').addEventListener('input', () => calculate(2));
  }
+
 
